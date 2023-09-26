@@ -1,6 +1,7 @@
 package com.example.railwayticketreservation.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -16,10 +17,10 @@ public class TicketServiceImpl {
 	private Queue<Integer> racListQueue=new LinkedList<>();
 	private List<Integer> bookedTicketList=new ArrayList();
 	
-	private List<Integer> lowerBirthPositions = new ArrayList();
-	private List<Integer> middleBirthPositions = new ArrayList();
-	private List<Integer> upperBirthPositions= new ArrayList();
-	private List<Integer> racPositions = new ArrayList();
-	private List<Integer> waitingListPositions = new ArrayList();
+	private List<Integer> lowerBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+	private List<Integer> middleBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+	private List<Integer> racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+	private List<Integer> waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
 	
 }
