@@ -8,7 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Ticket {
 	@Id
@@ -19,45 +25,5 @@ public class Ticket {
 	private String berthType;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="Passenger_id")
-	private Passenger passenger;
-	
-	public Ticket(){};
-	
-	public Ticket(Passenger passenger, int seatNumber, String berthType) {
-		super();
-		this.passenger = passenger;
-		this.seatNumber = seatNumber;
-		this.berthType = berthType;
-	}
-
-	public Passenger getPassenger() {
-		return passenger;
-	}
-
-	public void setPassenger(Passenger passenger) {
-		this.passenger = passenger;
-	}
-
-	public int getSeatNumber() {
-		return seatNumber;
-	}
-
-	public void setSeatNumber(int seatNumber) {
-		this.seatNumber = seatNumber;
-	}
-
-	public String getBerthType() {
-		return berthType;
-	}
-
-	public void setBerthType(String berthType) {
-		this.berthType = berthType;
-	}
-
-	@Override
-	public String toString() {
-		return "Ticket [passenger=" + passenger + ", seatNumber=" + seatNumber + ", berthType=" + berthType + "]";
-	}
-	
-	
+	private Passenger passenger;	
 }
