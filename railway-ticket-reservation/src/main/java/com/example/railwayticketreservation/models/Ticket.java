@@ -1,9 +1,25 @@
 package com.example.railwayticketreservation.models;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+
+@Entity
 public class Ticket {
-	private Passenger passenger;
+	@Id
+	@SequenceGenerator(name="tid_sequence",sequenceName = "tid_sequence",allocationSize = 1,initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "tid_sequence")
+	private int ticketId;
 	private int seatNumber;
 	private String berthType;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="Passenger_id")
+	private Passenger passenger;
 	
 	public Ticket(){};
 	
