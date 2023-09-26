@@ -21,9 +21,10 @@ public class Ticket {
 	@SequenceGenerator(name="tid_sequence",sequenceName = "tid_sequence",allocationSize = 1,initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "tid_sequence")
 	private int ticketId;
+	
 	private int seatNumber;
 	private String berthType;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="Passenger_id")
-	private Passenger passenger;	
+	
+	@OneToOne(mappedBy = "ticket")
+    private Passenger passenger;
 }

@@ -1,9 +1,12 @@
 package com.example.railwayticketreservation.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +25,9 @@ public class Passenger {
 	private int age;
 	private String gender;
 	private String berthPreference;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="ticketId")
+	private Ticket ticket;
 	
 		
 	
