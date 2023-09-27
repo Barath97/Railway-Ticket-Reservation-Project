@@ -49,6 +49,7 @@ public class TicketServiceImpl implements TicketService {
 		   (passenger.getBerthPreference().equals("U") && totalUpperBerths>0)) {
 			
 			if(passenger.getBerthPreference().equals("L")) {
+				 seatAllocation("L",passenger);
 				 ticketDao.save(passenger);
 				 totalLowerBerths--;
 				 lowerBerthPositions.remove(0);
@@ -58,8 +59,29 @@ public class TicketServiceImpl implements TicketService {
 				totalMiddleBerths--;
 				middleBerthPositions.remove(0);
 			}
+			else if(passenger.getBerthPreference().equals("U")) {
+				ticketDao.save(passenger);
+				totalUpperBerths--;
+				upperBerthPositions.remove(0);
+			}
 		}
 		
+	}
+	
+	public void seatAllocation(String preference,Passenger passenger) {
+		if (preference.equals("L")) {
+            int seat = lowerBerthPositions.get(0);
+            String s = String.valueOf(seat);
+            passenger.setSeatNumber(preference + s);
+        } else if (preference.equals("M")) {
+            int seat = middleBerthPositions.get(0);
+            String s = String.valueOf(seat);
+            passenger.setSeatNumber(preference + s);
+        } else if (preference.equals("U")) {
+            int seat = upperBerthPositions.get(0);
+            String s = String.valueOf(seat);
+            passenger.setSeatNumber(preference + s);
+        }
 	}
 	
 }

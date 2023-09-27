@@ -24,7 +24,8 @@ public class Passenger {
 	private int age;
 	private String gender;
 	private String berthPreference;
-
+	private String seatNumber;
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="ticketId")
 	private Ticket ticket;
@@ -37,6 +38,7 @@ public class Passenger {
 		this.age = age;
 		this.gender = gender;
 		this.berthPreference = berthPreference;
+		this.seatNumber=null;
 		this.ticket = ticket;
 	}
 
@@ -86,6 +88,15 @@ public class Passenger {
 
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
+	}
+	
+
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
 	}
 
 	@Override
