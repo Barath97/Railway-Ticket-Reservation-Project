@@ -54,11 +54,13 @@ public class TicketServiceImpl implements TicketService {
 				 lowerBerthPositions.remove(0);
 			}
 			else if(passenger.getBerthPreference().equals("M")) {
+				seatAllocation("M",passenger);
 				ticketDao.save(passenger);
 				totalMiddleBerths--;
 				middleBerthPositions.remove(0);
 			}
 			else if(passenger.getBerthPreference().equals("U")) {
+				seatAllocation("U",passenger);
 				ticketDao.save(passenger);
 				totalUpperBerths--;
 				upperBerthPositions.remove(0);
