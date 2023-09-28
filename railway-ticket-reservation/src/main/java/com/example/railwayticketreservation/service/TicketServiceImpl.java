@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.railwayticketreservation.dao.TicketDao;
 import com.example.railwayticketreservation.models.Passenger;
-import com.example.railwayticketreservation.models.Ticket;
 
 import jakarta.transaction.Transactional;
 @Service

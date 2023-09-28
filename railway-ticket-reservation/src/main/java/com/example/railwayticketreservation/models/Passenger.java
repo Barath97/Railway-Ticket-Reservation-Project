@@ -23,24 +23,23 @@ public class Passenger {
 	private String name;
 	private int age;
 	private String gender;
+	private String trainNumber;
 	private String berthPreference;
 	private String seatNumber;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="ticketId")
-	private Ticket ticket;
-	
 	public Passenger() {}
-	
-	public Passenger(String name, int age, String gender, String berthPreference, Ticket ticket) {
+
+
+	public Passenger(String name, int age, String gender, String trainNumber, String berthPreference) {
 		super();
 		this.name = name;
 		this.age = age;
 		this.gender = gender;
+		this.trainNumber = trainNumber;
 		this.berthPreference = berthPreference;
-		this.seatNumber=null;
-		this.ticket = ticket;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -82,15 +81,6 @@ public class Passenger {
 		this.berthPreference = berthPreference;
 	}
 
-	public Ticket getTicket() {
-		return ticket;
-	}
-
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
-	}
-	
-
 	public String getSeatNumber() {
 		return seatNumber;
 	}
@@ -99,11 +89,23 @@ public class Passenger {
 		this.seatNumber = seatNumber;
 	}
 
+
+	public String getTrainNumber() {
+		return trainNumber;
+	}
+
+
+	public void setTrainNumber(String trainNumber) {
+		this.trainNumber = trainNumber;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Passenger [id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", berthPreference="
-				+ berthPreference + ", ticket=" + ticket + "]";
+		return "Passenger [id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", trainNumber="
+				+ trainNumber + ", berthPreference=" + berthPreference + ", seatNumber=" + seatNumber + "]";
 	}
+
 	
 	
 	
