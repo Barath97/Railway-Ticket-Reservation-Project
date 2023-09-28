@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,15 @@ public class TicketServiceImpl implements TicketService {
 	@Autowired
 	private TicketDao ticketDao;
 	
-	private int totalLowerBerths=10;
-	private int totalMiddleBerths=10;
-	private int totalUpperBerths=10;
+	private int totalLowerBerths=9;
+	private int totalMiddleBerths=9;
+	private int totalUpperBerths=9;
 	private int totalRacTickets=5;
 	private int totalWaitingLists=5;
 	
-	private List<Integer> lowerBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-	private List<Integer> middleBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+	private List<Integer> lowerBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+	private List<Integer> middleBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9	));
 	private List<Integer> racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
 	private List<Integer> waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
 	
@@ -138,9 +139,41 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public void cancelTicket(int id) {
-		 
-		
+	public void cancelTicket(int id) { 
+		Optional<Passenger> passengerId=ticketDao.findById(id);
+		if(passengerId.isPresent()) {
+			Passenger passenger=passengerId.get();
+			String seatNumber=passenger.getSeatNumber();
+			String seatType	= seatNumber.substring(0, seatNumber.length()-1);
+			int seatTypeNumber =Integer.parseInt(seatNumber.substring(seatNumber.length() - 1));
+			switch(seatType) {
+				case "L":
+					ticketDao.deleteById(id);
+					totalLowerBerths++;
+					lowerBerthPositions.add(seatTypeNumber);
+					break;
+				case "M":
+					ticketDao.deleteById(id);
+					totalMiddleBerths++;
+					middleBerthPositions.add(seatTypeNumber);
+					break;
+				case "U":
+					ticketDao.deleteById(id);
+					totalUpperBerths++;
+					upperBerthPositions.add(seatTypeNumber);
+					break;
+				case "RAC":
+					ticketDao.deleteById(id);
+					break;
+				case "WL":
+					ticketDao.deleteById(id);
+					break;
+			}
+			
+		}
+		else {
+			System.out.println("Passenger id is Invalid");
+		}
 	}
 	
 }
