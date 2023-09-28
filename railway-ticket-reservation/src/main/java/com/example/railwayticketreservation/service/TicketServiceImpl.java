@@ -26,15 +26,15 @@ public class TicketServiceImpl implements TicketService {
 	private int totalRacTickets=5;
 	private int totalWaitingLists=5;
 	
-	private Queue<Integer> waitingListQueue=new LinkedList<>();
-	private Queue<Integer> racListQueue=new LinkedList<>();
-	private List<Integer> bookedTicketList=new ArrayList();
-	
 	private List<Integer> lowerBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
 	private List<Integer> middleBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
 	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
 	private List<Integer> racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
 	private List<Integer> waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+	
+	private Queue<Integer> waitingListQueue=new LinkedList<>();
+	private Queue<Integer> racListQueue=new LinkedList<>();
+	private List<Integer> bookedTicketList=new ArrayList();
 	
 	@Override
 	public void bookTicket(Passenger passenger) {
@@ -65,24 +65,63 @@ public class TicketServiceImpl implements TicketService {
 				totalUpperBerths--;
 				upperBerthPositions.remove(0);
 			}
+			
+			else if(totalLowerBerths>0) {
+				seatAllocation("L",passenger);
+				ticketDao.save(passenger);
+				totalLowerBerths--;
+				lowerBerthPositions.remove(0);
+			}
+			
+			else if(totalMiddleBerths>0) {
+				seatAllocation("M",passenger);
+				ticketDao.save(passenger);
+				totalMiddleBerths--;
+				middleBerthPositions.get(0);
+			}
+			
+			else if(totalUpperBerths>0) {
+				seatAllocation("U",passenger);
+				ticketDao.save(passenger);
+				totalUpperBerths--;
+				upperBerthPositions.get(0);
+			}
+			
+			else if(totalRacTickets>0) {
+				seatAllocation("RAC",passenger);
+				ticketDao.save(passenger);
+				totalRacTickets--;
+				racPositions.get(0);
+			}
 		}
 		
 	}
 	
 	public void seatAllocation(String preference,Passenger passenger) {
+		
 		if (preference.equals("L")) {
             int seat = lowerBerthPositions.get(0);
             String s = String.valueOf(seat);
             passenger.setSeatNumber(preference + s);
-        } else if (preference.equals("M")) {
+        } 
+		
+		else if (preference.equals("M")) {
             int seat = middleBerthPositions.get(0);
             String s = String.valueOf(seat);
             passenger.setSeatNumber(preference + s);
-        } else if (preference.equals("U")) {
+        } 
+		
+		else if (preference.equals("U")) {
             int seat = upperBerthPositions.get(0);
             String s = String.valueOf(seat);
             passenger.setSeatNumber(preference + s);
         }
+		
+		else if(preference.equals("RAC")) {
+			int seat = racPositions.get(0);
+			String s = String.valueOf(seat);
+			passenger.setSeatNumber(preference + s);
+		}
 	}
 	
 }
