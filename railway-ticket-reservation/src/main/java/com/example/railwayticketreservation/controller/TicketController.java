@@ -3,6 +3,7 @@ package com.example.railwayticketreservation.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,15 @@ public class TicketController {
 			return new ResponseEntity<>("Ticket Booked Successfully",HttpStatus.OK);
 		}catch(Exception e) {
 			return new ResponseEntity<>("Failed to book Ticker",HttpStatus.OK);
+		}
+	}
+	
+	public ResponseEntity<?> cancelTicket(@PathVariable int id){
+		try {
+			ticketService.cancelTicket(id);
+			return new ResponseEntity<>("Ticket cancelled Succesfully",HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>("Failed to cancel Ticket",HttpStatus.OK);
 		}
 	}
 }

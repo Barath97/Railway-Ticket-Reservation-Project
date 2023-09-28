@@ -93,6 +93,13 @@ public class TicketServiceImpl implements TicketService {
 				totalRacTickets--;
 				racPositions.get(0);
 			}
+			
+			else if(totalWaitingLists>0) {
+				seatAllocation("WL",passenger);
+				ticketDao.save(passenger);
+				totalWaitingLists--;
+				waitingListPositions.get(0);
+			}
 		}
 		
 	}
@@ -122,6 +129,18 @@ public class TicketServiceImpl implements TicketService {
 			String s = String.valueOf(seat);
 			passenger.setSeatNumber(preference + s);
 		}
+		
+		else if(preference.equals("WL")) {
+			int seat = waitingListPositions.get(0);
+			String s = String.valueOf(seat);
+			passenger.setSeatNumber(preference + s); 
+		}
+	}
+
+	@Override
+	public void cancelTicket(int id) {
+		 
+		
 	}
 	
 }
