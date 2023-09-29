@@ -25,42 +25,31 @@ public class TicketServiceImpl implements TicketService {
 	private int totalMiddleBerths=9;
 	private int totalUpperBerths=9;
 	private int totalRacTickets=5;
-	private int totalWaitingLists=5;
 	
 	private List<Integer> lowerBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	private List<Integer> middleBerthPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
-	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9	));
+	private List<Integer> upperBerthPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
 	private List<Integer> racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-	private List<Integer> waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-	
-	private Queue<Integer> waitingListQueue=new LinkedList<>();
-	private Queue<Integer> racListQueue=new LinkedList<>();
-	private List<Integer> bookedTicketList=new ArrayList();
-	
+
 	@Override
 	public void bookTicket(Passenger passenger) {
 		 
-		if(totalWaitingLists==0) {
-			 System.out.println("No tickets avaiable");
-		}
 		
-		if((passenger.getBerthPreference().equals("L") && totalLowerBerths>0)||
-		   (passenger.getBerthPreference().equals("M") && totalMiddleBerths>0)||
-		   (passenger.getBerthPreference().equals("U") && totalUpperBerths>0)) {
+		if(totalLowerBerths>0|| totalUpperBerths>0 || totalMiddleBerths>0 || totalRacTickets>0) {
 			
-			if(passenger.getBerthPreference().equals("L")) {
+			if(passenger.getBerthPreference().equals("L") && totalLowerBerths>0) {
 				 seatAllocation("L",passenger);
 				 ticketDao.save(passenger);
 				 totalLowerBerths--;
 				 lowerBerthPositions.remove(0);
 			}
-			else if(passenger.getBerthPreference().equals("M")) {
+			else if(passenger.getBerthPreference().equals("M") && totalMiddleBerths>0) {
 				seatAllocation("M",passenger);
 				ticketDao.save(passenger);
 				totalMiddleBerths--;
 				middleBerthPositions.remove(0);
 			}
-			else if(passenger.getBerthPreference().equals("U")) {
+			else if(passenger.getBerthPreference().equals("U") && totalUpperBerths>0) {
 				seatAllocation("U",passenger);
 				ticketDao.save(passenger);
 				totalUpperBerths--;
@@ -78,35 +67,29 @@ public class TicketServiceImpl implements TicketService {
 				seatAllocation("M",passenger);
 				ticketDao.save(passenger);
 				totalMiddleBerths--;
-				middleBerthPositions.get(0);
+				middleBerthPositions.remove(0);
 			}
 			
 			else if(totalUpperBerths>0) {
 				seatAllocation("U",passenger);
 				ticketDao.save(passenger);
 				totalUpperBerths--;
-				upperBerthPositions.get(0);
+				upperBerthPositions.remove(0);
 			}
 			
 			else if(totalRacTickets>0) {
 				seatAllocation("RAC",passenger);
 				ticketDao.save(passenger);
 				totalRacTickets--;
-				racPositions.get(0);
+				racPositions.remove(0);
 			}
 			
-			else if(totalWaitingLists>0) {
-				seatAllocation("WL",passenger);
-				ticketDao.save(passenger);
-				totalWaitingLists--;
-				waitingListPositions.get(0);
-			}
 		}
 		
 	}
 	
 	public void seatAllocation(String preference,Passenger passenger) {
-		
+	
 		if (preference.equals("L")) {
             int seat = lowerBerthPositions.get(0);
             String s = String.valueOf(seat);
@@ -131,11 +114,6 @@ public class TicketServiceImpl implements TicketService {
 			passenger.setSeatNumber(preference + s);
 		}
 		
-		else if(preference.equals("WL")) {
-			int seat = waitingListPositions.get(0);
-			String s = String.valueOf(seat);
-			passenger.setSeatNumber(preference + s); 
-		}
 	}
 
 	@Override
@@ -164,16 +142,13 @@ public class TicketServiceImpl implements TicketService {
 					break;
 				case "RAC":
 					ticketDao.deleteById(id);
-					break;
-				case "WL":
-					ticketDao.deleteById(id);
+					totalRacTickets++;
+					racPositions.add(seatTypeNumber);
 					break;
 			}
 			
 		}
-		else {
-			System.out.println("Passenger id is Invalid");
-		}
+	
 	}
 	
 }
