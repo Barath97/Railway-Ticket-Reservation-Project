@@ -32,7 +32,7 @@ public class TicketServiceImpl implements TicketService {
 	private List<Integer> racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
 
 	@Override
-	public void bookTicket(Passenger passenger) {
+	public boolean bookTicket(Passenger passenger) {
 		 
 		
 		if(totalLowerBerths>0|| totalUpperBerths>0 || totalMiddleBerths>0 || totalRacTickets>0) {
@@ -42,18 +42,21 @@ public class TicketServiceImpl implements TicketService {
 				 ticketDao.save(passenger);
 				 totalLowerBerths--;
 				 lowerBerthPositions.remove(0);
+				 return true;
 			}
 			else if(passenger.getBerthPreference().equals("M") && totalMiddleBerths>0) {
 				seatAllocation("M",passenger);
 				ticketDao.save(passenger);
 				totalMiddleBerths--;
 				middleBerthPositions.remove(0);
+				return true;
 			}
 			else if(passenger.getBerthPreference().equals("U") && totalUpperBerths>0) {
 				seatAllocation("U",passenger);
 				ticketDao.save(passenger);
 				totalUpperBerths--;
 				upperBerthPositions.remove(0);
+				return true;
 			}
 			
 			else if(totalLowerBerths>0) {
@@ -61,6 +64,7 @@ public class TicketServiceImpl implements TicketService {
 				ticketDao.save(passenger);
 				totalLowerBerths--;
 				lowerBerthPositions.remove(0);
+				return true;
 			}
 			
 			else if(totalMiddleBerths>0) {
@@ -68,6 +72,7 @@ public class TicketServiceImpl implements TicketService {
 				ticketDao.save(passenger);
 				totalMiddleBerths--;
 				middleBerthPositions.remove(0);
+				return true;
 			}
 			
 			else if(totalUpperBerths>0) {
@@ -75,6 +80,7 @@ public class TicketServiceImpl implements TicketService {
 				ticketDao.save(passenger);
 				totalUpperBerths--;
 				upperBerthPositions.remove(0);
+				return true;
 			}
 			
 			else if(totalRacTickets>0) {
@@ -82,9 +88,11 @@ public class TicketServiceImpl implements TicketService {
 				ticketDao.save(passenger);
 				totalRacTickets--;
 				racPositions.remove(0);
+				return true;
 			}
 			
 		}
+		return false;
 		
 	}
 	
@@ -117,7 +125,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public void cancelTicket(int id) { 
+	public boolean cancelTicket(int id) { 
 		Optional<Passenger> passengerId=ticketDao.findById(id);
 		if(passengerId.isPresent()) {
 			Passenger passenger=passengerId.get();
@@ -145,10 +153,30 @@ public class TicketServiceImpl implements TicketService {
 					totalRacTickets++;
 					racPositions.add(seatTypeNumber);
 					break;
+
 			}
-			
+			return true;
+		}else {
+	        throw new IllegalArgumentException("Invalid passenger ID: " + id);
+
 		}
 	
+	}
+
+	@Override
+	public List<Passenger> getAlltickets() {
+		 return ticketDao.findAll();
+	}
+
+	@Override
+	public Passenger ticketDetails(int id) {
+		 Optional<Passenger> passenger=ticketDao.findById(id);
+		 if(passenger.isPresent()) {
+			 return passenger.get();
+		 }
+		 else {
+			 return null;
+		 }
 	}
 	
 }
